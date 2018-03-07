@@ -1,12 +1,3 @@
-# eatme
-
-Decoupling the frontend from backend
-
-## Code
-
-What is your opinion on the following architecture?
-
-```typescript
 // Backend data model
 interface FruitBack {
     id: number;
@@ -18,8 +9,8 @@ interface FruitBack {
 // Get fruits from Backend service
 function httpGetFruits(): FruitBack[] {
     return [
-        { id: 1, name: 'pomme', colorValue: 'verte', price: 2.25 },
-        { id: 2, name: 'pomme', colorValue: 'rouge', price: 3.15 },
+        { id: 1, name: 'pomme', colorValue: 'verte', price: 2.25 }, 
+        { id: 2, name: 'pomme', colorValue: 'rouge', price: 3.15 }, 
         { id: 3, name: 'poire', colorValue: 'jaune', price: 1.05 }
     ];
 }
@@ -59,19 +50,3 @@ function Main() {
 
 // L(a)unch time!
 Main();
-```
-
-## Run
-
-(install dependencies with `npm i`)
-
-*Terminal output:*
-
-```txt
-$ npm start
-
-Mon repas fruité:
-- Je mange une pomme verte.
-- Je mange une pomme rouge.
-- Je mange une poire jaune.
-```

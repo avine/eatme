@@ -1,0 +1,25 @@
+{
+  "name": "eatme",
+  "version": "1.0.0",
+  "description": "Decoupling the frontend from backend",
+  "main": "index.js",
+  "scripts": {
+    "start": "ts-node index.ts",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/avine/eatme.git"
+  },
+  "author": "Stéphane Francel <contact@avine.io>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/avine/eatme/issues"
+  },
+  "homepage": "https://github.com/avine/eatme#readme",
+  "devDependencies": {
+    "ts-node": "^5.0.1",
+    "typescript": "^2.7.2"
+  },
+  "dependencies": {}
+}
