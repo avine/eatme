@@ -31,9 +31,11 @@ namespace V1 {
     // Hum... Hard to clone :(
     clone() {
       const clone = new FruitFront();
+
       clone.id = this.id;
       clone.name = this.name;
       clone.color = this.color;
+
       return clone;
     }
   }
