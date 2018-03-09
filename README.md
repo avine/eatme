@@ -14,10 +14,10 @@ interface FruitBack {
 }
 
 // Get fruits from Backend service
-function httpGetFruits(): FruitBack[] {
+function fruitsService(): FruitBack[] {
   return [
-    { id: 1, name: 'pomme', colorValue: 'verte', price: 2.25 }, 
-    { id: 2, name: 'pomme', colorValue: 'rouge', price: 3.15 }, 
+    { id: 1, name: 'pomme', colorValue: 'verte', price: 2.25 },
+    { id: 2, name: 'pomme', colorValue: 'rouge', price: 3.15 },
     { id: 3, name: 'poire', colorValue: 'jaune', price: 1.05 }
   ];
 }
@@ -38,9 +38,10 @@ class FruitFront {
   clone() {
     const clone = new FruitFront();
 
-    clone.id = this.id;
-    clone.name = this.name;
-    clone.color = this.color;
+    // We need to extract the instance properties...
+    Object.getOwnPropertyNames(this).forEach(
+      (prop: string) => clone[prop] = this[prop]
+    );
 
     return clone;
   }
@@ -59,10 +60,11 @@ function fruitsMapper(fruitBack: FruitBack) {
 
 // Main program that consumes the Backend
 function Main() {
-  const fruits: FruitFront[] = httpGetFruits().map(fruitsMapper);
+  const fruits: FruitFront[] = fruitsService().map(fruitsMapper);
 
+  // Let's try to clone and eat fruits
   console.log('\nMon repas fruité:');
-  fruits.forEach(fruit => console.log(fruit.eat()));
+  fruits.forEach(fruit => console.log(fruit.clone().eat()));
 }
 
 // L(a)unch time!
@@ -81,10 +83,10 @@ interface FruitBack {
 }
 
 // Get fruits from Backend service
-function httpGetFruits(): FruitBack[] {
+function fruitsService(): FruitBack[] {
   return [
-    { id: 1, name: 'pomme', colorValue: 'verte', price: 2.25 }, 
-    { id: 2, name: 'pomme', colorValue: 'rouge', price: 3.15 }, 
+    { id: 1, name: 'pomme', colorValue: 'verte', price: 2.25 },
+    { id: 2, name: 'pomme', colorValue: 'rouge', price: 3.15 },
     { id: 3, name: 'poire', colorValue: 'jaune', price: 1.05 }
   ];
 }
@@ -113,19 +115,20 @@ class Fruit {
 }
 
 // Map FruitBack object to FruitFront instance
-const fruitsMapper = (fruitBack: FruitBack) => 
-  new Fruit({ 
-    id: fruitBack.id, 
-    name: fruitBack.name, 
-    color: fruitBack.colorValue 
+const fruitsMapper = (fruitBack: FruitBack) =>
+  new Fruit({
+    id: fruitBack.id,
+    name: fruitBack.name,
+    color: fruitBack.colorValue
   });
 
 // Main program that consumes the Backend
 function Main() {
-  const fruits: Fruit[] = httpGetFruits().map(fruitsMapper);
+  const fruits: Fruit[] = fruitsService().map(fruitsMapper);
 
+  // Let's try to clone and eat fruits
   console.log('\nMon repas fruité:');
-  fruits.forEach(fruit => console.log(fruit.eat()));
+  fruits.forEach(fruit => console.log(fruit.clone().eat()));
 }
 
 // L(a)unch time!

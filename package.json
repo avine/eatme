@@ -4,7 +4,9 @@
   "description": "Decoupling the frontend from backend",
   "main": "index.js",
   "scripts": {
-    "start": "ts-node index.ts",
+    "index1": "ts-node index1",
+    "index2": "ts-node index2",
+    "start": "ts-node index2",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {

@@ -8,7 +8,7 @@ namespace V2 {
   }
 
   // Get fruits from Backend service
-  function httpGetFruits(): FruitBack[] {
+  function fruitsService(): FruitBack[] {
     return [
       { id: 1, name: 'pomme', colorValue: 'verte', price: 2.25 }, 
       { id: 2, name: 'pomme', colorValue: 'rouge', price: 3.15 }, 
@@ -49,10 +49,11 @@ namespace V2 {
 
   // Main program that consumes the Backend
   function Main() {
-    const fruits: Fruit[] = httpGetFruits().map(fruitsMapper);
+    const fruits: Fruit[] = fruitsService().map(fruitsMapper);
 
+    // Let's try to clone and eat fruits
     console.log('\nMon repas fruité:');
-    fruits.forEach(fruit => console.log(fruit.eat()));
+    fruits.forEach(fruit => console.log(fruit.clone().eat()));
   }
 
   // L(a)unch time!
