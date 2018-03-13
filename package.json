@@ -21,6 +21,7 @@
   },
   "homepage": "https://github.com/avine/pojo-or-not-pojo#readme",
   "devDependencies": {
+    "ts-lint": "^4.5.1",
     "ts-node": "^5.0.1",
     "typescript": "^2.7.2"
   },

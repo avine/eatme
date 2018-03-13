@@ -1,5 +1,6 @@
-import { shopsService } from '../services.back';
-import { ShopFront, shopsMapper } from './shops.front';
+import { shopsServiceBack } from '../service.back';
+import { ShopFront } from './shop.front';
+import { shopMapper } from './shop.mapper';
 
-const shops: ShopFront[] = shopsService().map(shopsMapper);
+const shops: ShopFront[] = shopsServiceBack().map(shopMapper);
 shops.forEach(shop => shop.clone().showcase());

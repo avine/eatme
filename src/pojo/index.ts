@@ -1,14 +1,9 @@
-import { shopsService } from '../services.back';
-import { IShopFront, ShopFront, shopsMapper } from './shops.front';
+import { shopsServiceBack } from '../service.back';
+import { shopsServiceFront } from './service.front';
+import { IShopFront, ShopFront } from './shop.front';
+import { shopMapper } from './shop.mapper';
 
-const shops: IShopFront[] = shopsService().map(shopsMapper);
+const shops: IShopFront[] = shopsServiceBack().map(shopMapper);
+shopsServiceFront.set(shops);
 
-const cloneShop = (shop: IShopFront): IShopFront => {
-  const fruits = shop.fruits.map(
-    fruit => ({ ...fruit })
-  );
-  return { ...shop, fruits };
-};
-
-shops.map(shop => cloneShop(shop))
-  .forEach(shop => new ShopFront(shop).showcase());
+shopsServiceFront.get().forEach(shop => new ShopFront(shop).showcase());

@@ -1,5 +1,3 @@
-// --- Backend interface ---
-
 export interface IFruitBack {
   id: number;
   name: string;
@@ -13,9 +11,7 @@ export interface IShopBack {
   fruits: IFruitBack[];
 }
 
-// --- Backend service ---
-
-export function shopsService(): IShopBack[] {
+export function shopsServiceBack(): IShopBack[] {
   return [
     {
       id: 1,

@@ -1,7 +1,4 @@
-import { IShopBack } from '../services.back';
-import { FruitFront, fruitsMapper } from './fruits.front';
-
-// --- Frontend shop class ---
+import { FruitFront } from './fruit.front';
 
 export class ShopFront {
   constructor(
@@ -25,13 +22,3 @@ export class ShopFront {
     })
   }
 }
-
-// --- Frontend shop mapper ---
-
-export const shopsMapper = (shopBack: IShopBack): ShopFront =>
-  new ShopFront(
-    shopBack.id,
-    shopBack.name, 
-    shopBack.fruits.map(fruitBack => fruitsMapper(fruitBack))
-  );
-
