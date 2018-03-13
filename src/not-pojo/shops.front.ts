@@ -28,11 +28,10 @@ export class ShopFront {
 
 // --- Frontend shop mapper ---
 
-export function shopsMapper(shopBack: IShopBack) {
-  const shopFront = new ShopFront(
+export function shopsMapper(shopBack: IShopBack): ShopFront {
+  return new ShopFront(
     shopBack.id,
     shopBack.name, 
     shopBack.fruits.map(fruitBack => fruitsMapper(fruitBack))
   );
-  return shopFront;
 }

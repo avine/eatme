@@ -9,14 +9,14 @@ export interface IFruitFront {
   // price: number; // Assuming our Frontend don't need to consume the price
 }
 
+export const cloneFruit = (fruit: IFruitFront): IFruitFront => (
+  { ...fruit }
+);
+
 // --- Frontend fruit class ---
 
 export class FruitFront {
   constructor(public fruit: IFruitFront) {}
-
-  clone() {
-    return new FruitFront({ ...this.fruit });
-  }
 
   description() {
     return `- some ${this.fruit.color} ${this.fruit.name}.`;
@@ -25,11 +25,10 @@ export class FruitFront {
 
 // --- Frontend fruit mapper ---
 
-export function fruitsMapper(fruitBack: IFruitBack) {
-  const fruitFront = new FruitFront({
+export function fruitsMapper(fruitBack: IFruitBack): IFruitFront {
+  return {
     id: fruitBack.id, 
     name: fruitBack.name, 
     color: fruitBack.colorValue 
-  });
-  return fruitFront;
+  };
 }
