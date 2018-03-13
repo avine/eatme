@@ -1,5 +1,5 @@
 import { IShopBack } from '../services.back';
-import { IFruitFront, FruitFront, fruitsMapper, cloneFruit } from './fruits.front';
+import { IFruitFront, FruitFront, fruitsMapper } from './fruits.front';
 
 // --- Frontend shop interface ---
 

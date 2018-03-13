@@ -4,6 +4,7 @@
   "description": "Decoupling the frontend from backend, using \"Plain Old JavaScript Object\" VS \"Class and Behavior\".",
   "main": "index.js",
   "scripts": {
+    "not-pojo-v2": "ts-node src/not-pojo-v2/index",
     "not-pojo": "ts-node src/not-pojo/index",
     "pojo": "ts-node src/pojo/index",
     "start": "npm run pojo",
