@@ -1,7 +1,7 @@
 {
   "name": "pojo-or-not-pojo",
   "version": "1.0.0",
-  "description": "Decoupling the frontend from backend",
+  "description": "Decoupling the frontend from backend, using \"Plain Old JavaScript Object\" VS \"Class and Behavior\".",
   "main": "index.js",
   "scripts": {
     "not-pojo": "ts-node src/not-pojo/index",

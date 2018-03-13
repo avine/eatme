@@ -1,7 +1,6 @@
 # pojo-or-not-pojo (that's the question...)
 
-- Decoupling the frontend from backend.
-- Using "Plain Old JavaScript Object" VS "Class and Behavior".
+Decoupling the frontend from backend, using "Plain Old JavaScript Object" VS "Class and Behavior".
 
 ## Run
 
