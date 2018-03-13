@@ -4,11 +4,11 @@ Decoupling the frontend and backend, using "Plain Old JavaScript Object" versus 
 
 What is the impact when "immutable" comes into play?
 
-## Run
+## The App
 
 Install dependencies with `npm i`.
 
-Next, execute `npm run not-pojo` or `npm start` (which is an alias of `npm run pojo`).
+Execute `npm run not-pojo` or `npm start` (which is an alias of `npm run pojo`).
 
 ```txt
 $ npm start
@@ -22,7 +22,7 @@ At "Fruit Mania", you will find:
 - some green kiwis.
 ```
 
-## Code
+## The Code
 
 ### service.back.ts
 
@@ -64,6 +64,23 @@ export function shopsServiceBack(): IShopBack[] {
 
 ## fruit.front.ts
 
+*Not-Pojo:*
+
+```ts
+export class FruitFront {
+  constructor(
+    public id: number,
+    public name: string,
+    public color: string // In our Frontend, "colorValue" is named "color"
+    // price: number // Assuming our Frontend don't need to consume the price
+  ) {}
+
+  description() {
+    return `- some ${this.color} ${this.name}.`;
+  }
+}
+```
+
 *Pojo:*
 
 ```ts
@@ -83,24 +100,22 @@ export class FruitFront {
 }
 ```
 
+## fruit.mapper.ts
+
 *Not-Pojo:*
 
 ```ts
-export class FruitFront {
-  constructor(
-    public id: number,
-    public name: string,
-    public color: string // In our Frontend, "colorValue" is named "color"
-    // price: number // Assuming our Frontend don't need to consume the price
-  ) {}
+import { IFruitBack } from '../service.back';
+import { FruitFront } from './fruit.front';
 
-  description() {
-    return `- some ${this.color} ${this.name}.`;
-  }
-}
+// With "Not-Pojo", we create eager class instance, when mapping the backend service!
+export const fruitMapper = (fruitBack: IFruitBack): FruitFront =>
+  new FruitFront(
+    fruitBack.id,
+    fruitBack.name,
+    fruitBack.colorValue
+  );
 ```
-
-## fruit.mapper.ts
 
 *Pojo:*
 
@@ -116,44 +131,7 @@ export const fruitMapper = (fruitBack: IFruitBack): IFruitFront => ({
 
 ```
 
-*Not-Pojo:*
-
-```ts
-import { IFruitBack } from '../service.back';
-import { FruitFront } from './fruit.front';
-
-export const fruitMapper = (fruitBack: IFruitBack): FruitFront => 
-  new FruitFront(
-    fruitBack.id,
-    fruitBack.name,
-    fruitBack.colorValue
-  );
-```
-
 ## shop.front.ts
-
-*Pojo:*
-
-```ts
-import { FruitFront, IFruitFront } from './fruit.front';
-
-export interface IShopFront {
-  id: number;
-  name: string;
-  fruits: IFruitFront[];
-}
-
-export class ShopFront {
-  constructor(public shop: IShopFront) {}
-
-  showcase() {
-    console.log(`\nAt "${this.shop.name}", you will find:`);
-    this.shop.fruits.forEach(fruit => {
-      console.log(new FruitFront(fruit).description());
-    })
-  }
-}
-```
 
 *Not-Pojo:*
 
@@ -176,7 +154,47 @@ export class ShopFront {
 }
 ```
 
+*Pojo:*
+
+```ts
+import { FruitFront, IFruitFront } from './fruit.front';
+
+export interface IShopFront {
+  id: number;
+  name: string;
+  fruits: IFruitFront[];
+}
+
+export class ShopFront {
+  constructor(public shop: IShopFront) {}
+
+  showcase() {
+    console.log(`\nAt "${this.shop.name}", you will find:`);
+    this.shop.fruits.forEach(fruit => {
+      // With "Pojo", we create lazy class instance, when behavior is needed.
+      console.log(new FruitFront(fruit).description());
+    })
+  }
+}
+```
+
 ## shop.mapper.ts
+
+*Not-Pojo:*
+
+```ts
+import { IShopBack } from '../service.back';
+import { fruitMapper } from './fruit.mapper';
+import { ShopFront } from './shop.front';
+
+// With "Not-Pojo", we create eager class instance, when mapping the backend service!
+export const shopMapper = (shopBack: IShopBack): ShopFront =>
+  new ShopFront(
+    shopBack.id,
+    shopBack.name, 
+    shopBack.fruits.map(fruitBack => fruitMapper(fruitBack))
+  );
+```
 
 *Pojo:*
 
@@ -192,37 +210,11 @@ export const shopMapper = (shopBack: IShopBack): IShopFront => ({
 });
 ```
 
-*Not-Pojo:*
-
-```ts
-import { IShopBack } from '../service.back';
-import { fruitMapper } from './fruit.mapper';
-import { ShopFront } from './shop.front';
-
-export const shopMapper = (shopBack: IShopBack): ShopFront =>
-  new ShopFront(
-    shopBack.id,
-    shopBack.name, 
-    shopBack.fruits.map(fruitBack => fruitMapper(fruitBack))
-  );
-```
-
 ## index.ts
 
-*Pojo:*
-
-```ts
-import { shopsServiceBack } from '../service.back';
-import { shopsServiceFront } from './service.front';
-import { IShopFront, ShopFront } from './shop.front';
-import { shopMapper } from './shop.mapper';
-
-const shops: IShopFront[] = shopsServiceBack().map(shopMapper);
-shopsServiceFront.set(shops);
-
-shopsServiceFront.get().forEach(shop => new ShopFront(shop).showcase());
-
-```
+Now, hang on a minute.
+We are going to explain `shopsServiceFront` in the next section.
+For now, assume that it is used as a setter/getter of the front shop.
 
 *Not-Pojo:*
 
@@ -238,31 +230,24 @@ shopsServiceFront.set(shops);
 shopsServiceFront.get().forEach(shop => shop.showcase());
 ```
 
-## service.front.ts
-
 *Pojo:*
 
 ```ts
-import { IShopFront } from './shop.front';
+import { shopsServiceBack } from '../service.back';
+import { shopsServiceFront } from './service.front';
+import { IShopFront, ShopFront } from './shop.front';
+import { shopMapper } from './shop.mapper';
 
-const cloneShop = (shop: IShopFront): IShopFront => {
-  const fruits = shop.fruits.map(
-      fruit => ({ ...fruit })
-    );
-    return { ...shop, fruits };
-  };
+const shops: IShopFront[] = shopsServiceBack().map(shopMapper);
+shopsServiceFront.set(shops);
 
-let store: IShopFront[] = [];
-
-export const shopsServiceFront = {
-  set(_store: IShopFront[]) {
-    store = _store;
-  },
-  get() {
-    return store.map(cloneShop);
-  }
-};
+// With "Pojo", we create lazy class instance, when behavior is needed.
+shopsServiceFront.get().forEach(shop => new ShopFront(shop).showcase());
 ```
+
+## service.front.ts
+
+Here comes the final piece of the demonstration...
 
 *Not-Pojo:*
 
@@ -270,6 +255,8 @@ export const shopsServiceFront = {
 import { FruitFront } from './fruit.front';
 import { ShopFront } from './shop.front';
 
+// Oups! Shop is hard to clone.
+// With "Not-Pojo", we need to create instances of the classes again!
 const cloneShop = (shop: ShopFront) => {
   const fruits = shop.fruits.map(
     fruit => new FruitFront(fruit.id, fruit.name, fruit.color)
@@ -277,6 +264,7 @@ const cloneShop = (shop: ShopFront) => {
   return new ShopFront(shop.id, shop.name, fruits);
 };
 
+// Frontend shop store
 let store: ShopFront[] = [];
 
 export const shopsServiceFront = {
@@ -284,7 +272,45 @@ export const shopsServiceFront = {
     store = _store;
   },
   get() {
+    // Always return a clone for immutability
     return store.map(cloneShop);
   }
 };
 ```
+
+*Pojo:*
+
+```ts
+import { IShopFront } from './shop.front';
+
+// With "Pojo", we just need to clone "Pojo" objects!
+const cloneShop = (shop: IShopFront): IShopFront => {
+  const fruits = shop.fruits.map(
+      fruit => ({ ...fruit })
+    );
+    return { ...shop, fruits };
+  };
+
+// Frontend shop store
+let store: IShopFront[] = [];
+
+export const shopsServiceFront = {
+  set(_store: IShopFront[]) {
+    store = _store;
+  },
+  get() {
+    // Always return a clone for immutability
+    return store.map(cloneShop);
+  }
+};
+```
+
+## Conclusion
+
+If you do not need immutability then the "Not-Pojo" solution is the best.
+You create instances of the classes eagerly when mapping the backend service.
+And you get all expected behaviors instantly.
+
+But if you need immutability then the "Pojo" solution is the best.
+You can easily get cloned objects from the store when you need them.
+And you create instances of the classes lazily when behavior is needed.
