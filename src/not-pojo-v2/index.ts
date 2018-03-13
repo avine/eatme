@@ -1,6 +1,6 @@
 import { shopsService } from '../services.back';
 import { ShopFront, shopsMapper } from './shops.front';
-import { FruitFront } from '../not-pojo-v2/fruits.front';
+import { FruitFront } from './fruits.front';
 
 const shops: ShopFront[] = shopsService().map(shopsMapper);
 
