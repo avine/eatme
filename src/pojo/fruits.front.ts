@@ -21,10 +21,8 @@ export class FruitFront {
 
 // --- Frontend fruit mapper ---
 
-export function fruitsMapper(fruitBack: IFruitBack): IFruitFront {
-  return {
-    id: fruitBack.id, 
-    name: fruitBack.name, 
-    color: fruitBack.colorValue 
-  };
-}
+export const fruitsMapper = (fruitBack: IFruitBack): IFruitFront => ({
+  id: fruitBack.id, 
+  name: fruitBack.name, 
+  color: fruitBack.colorValue 
+});

@@ -24,10 +24,8 @@ export class ShopFront {
 
 // --- Frontend shop mapper ---
 
-export function shopsMapper(shopBack: IShopBack): IShopFront {
-  return {
-    id: shopBack.id,
-    name: shopBack.name, 
-    fruits: shopBack.fruits.map(fruitBack => fruitsMapper(fruitBack))
-  };
-}
+export const shopsMapper = (shopBack: IShopBack): IShopFront => ({
+  id: shopBack.id,
+  name: shopBack.name, 
+  fruits: shopBack.fruits.map(fruitBack => fruitsMapper(fruitBack))
+});
