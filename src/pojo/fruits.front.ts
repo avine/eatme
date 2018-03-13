@@ -9,10 +9,6 @@ export interface IFruitFront {
   // price: number; // Assuming our Frontend don't need to consume the price
 }
 
-export const cloneFruit = (fruit: IFruitFront): IFruitFront => (
-  { ...fruit }
-);
-
 // --- Frontend fruit class ---
 
 export class FruitFront {

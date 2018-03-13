@@ -9,10 +9,6 @@ export interface IShopFront {
   fruits: IFruitFront[];
 }
 
-export const cloneShop = (shop: IShopFront): IShopFront => (
-  { ...shop, fruits: [ ...shop.fruits ] }
-);
-
 // --- Frontend shop class ---
 
 export class ShopFront {
@@ -21,7 +17,7 @@ export class ShopFront {
   showcase() {
     console.log(`\nAt "${this.shop.name}", you will find:`);
     this.shop.fruits.forEach(fruit => {
-      console.log(new FruitFront(cloneFruit(fruit)).description());
+      console.log(new FruitFront(fruit).description());
     })
   }
 }
