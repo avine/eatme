@@ -1,6 +1,8 @@
 # pojo-or-not-pojo (that's the question...)
 
-Decoupling the frontend from backend, using "Plain Old JavaScript Object" VS "Class and Behavior".
+Decoupling the frontend and backend, using "Plain Old JavaScript Object" versus "Class instance with Behavior".
+
+What is the impact when "immutable" comes into play?
 
 ## Run
 
@@ -205,6 +207,37 @@ export const shopMapper = (shopBack: IShopBack): ShopFront =>
   );
 ```
 
+## index.ts
+
+*Pojo:*
+
+```ts
+import { shopsServiceBack } from '../service.back';
+import { shopsServiceFront } from './service.front';
+import { IShopFront, ShopFront } from './shop.front';
+import { shopMapper } from './shop.mapper';
+
+const shops: IShopFront[] = shopsServiceBack().map(shopMapper);
+shopsServiceFront.set(shops);
+
+shopsServiceFront.get().forEach(shop => new ShopFront(shop).showcase());
+
+```
+
+*Not-Pojo:*
+
+```ts
+import { shopsServiceBack } from '../service.back';
+import { shopsServiceFront } from './service.front';
+import { ShopFront } from './shop.front';
+import { shopMapper } from './shop.mapper';
+
+const shops: ShopFront[] = shopsServiceBack().map(shopMapper);
+shopsServiceFront.set(shops);
+
+shopsServiceFront.get().forEach(shop => shop.showcase());
+```
+
 ## service.front.ts
 
 *Pojo:*
@@ -254,35 +287,4 @@ export const shopsServiceFront = {
     return store.map(cloneShop);
   }
 };
-```
-
-## index.ts
-
-*Pojo:*
-
-```ts
-import { shopsServiceBack } from '../service.back';
-import { shopsServiceFront } from './service.front';
-import { IShopFront, ShopFront } from './shop.front';
-import { shopMapper } from './shop.mapper';
-
-const shops: IShopFront[] = shopsServiceBack().map(shopMapper);
-shopsServiceFront.set(shops);
-
-shopsServiceFront.get().forEach(shop => new ShopFront(shop).showcase());
-
-```
-
-*Not-Pojo:*
-
-```ts
-import { shopsServiceBack } from '../service.back';
-import { shopsServiceFront } from './service.front';
-import { ShopFront } from './shop.front';
-import { shopMapper } from './shop.mapper';
-
-const shops: ShopFront[] = shopsServiceBack().map(shopMapper);
-shopsServiceFront.set(shops);
-
-shopsServiceFront.get().forEach(shop => shop.showcase());
 ```
