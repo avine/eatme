@@ -214,7 +214,7 @@ export const shopMapper = (shopBack: IShopBack): IShopFront => ({
 
 Now, hang on a minute.
 We are going to explain `shopsServiceFront` in the next section.
-For now, assume that it is used as a setter/getter of the front shop.
+For now, assume that it is used as a setter/getter of the frontend shop.
 
 *Not-Pojo:*
 
@@ -247,7 +247,8 @@ shopsServiceFront.get().forEach(shop => new ShopFront(shop).showcase());
 
 ## service.front.ts
 
-Here comes the final piece of the demonstration...
+So far both solutions are still valid!
+But here comes the final piece of the demonstration...
 
 *Not-Pojo:*
 
