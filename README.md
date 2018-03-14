@@ -1,6 +1,6 @@
 # pojo-or-not-pojo (that's the question...)
 
-Decoupling the frontend and backend, using "Plain Old JavaScript Object" versus "Class instance with Behavior".
+Decoupling the frontend and backend (hexagonal-architecture), using "Plain Old JavaScript Object" versus "Class instance with Behavior".
 
 What is the impact when "immutable" comes into play?
 
@@ -55,7 +55,7 @@ export function shopsServiceBack(): IShopBack[] {
       name: 'Fruit Mania',
       fruits: [
         { id: 3, name: 'pears', colorValue: 'yellow', price: 1.05 },
-        { id: 3, name: 'kiwis', colorValue: 'green', price: 3.35 }
+        { id: 4, name: 'kiwis', colorValue: 'green', price: 3.35 }
       ]
     }
   ];
@@ -452,10 +452,10 @@ const cloneItem = (itemFront: ItemFront): IItemFront => ({
 
 ## Conclusion
 
-If you do not need immutability then the "Not-Pojo" solution is the best.
+If you do not need hexagonal-architecture and immutability then the "Not-Pojo" solution is the best.
 You create instances of the classes eagerly when mapping the backend service.
 And you get all the expected behaviors instantly.
 
-But if you need immutability then the "Pojo" solution is the best.
-You can easily get cloned objects from the store when you need them.
+But if you need hexagonal-architecture or immutability then the "Pojo" solution is the best.
+You can easily map and clone objects when you need it.
 And you create instances of the classes lazily when behavior is needed.
