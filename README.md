@@ -62,7 +62,7 @@ export function shopsServiceBack(): IShopBack[] {
 }
 ```
 
-## fruit.front.ts
+### fruit.front.ts
 
 *Not-Pojo:*
 
@@ -100,7 +100,7 @@ export class FruitFront {
 }
 ```
 
-## fruit.mapper.ts
+### fruit.mapper.ts
 
 *Not-Pojo:*
 
@@ -131,7 +131,7 @@ export const fruitMapper = (fruitBack: IFruitBack): IFruitFront => ({
 
 ```
 
-## shop.front.ts
+### shop.front.ts
 
 *Not-Pojo:*
 
@@ -178,7 +178,7 @@ export class ShopFront {
 }
 ```
 
-## shop.mapper.ts
+### shop.mapper.ts
 
 *Not-Pojo:*
 
@@ -210,7 +210,7 @@ export const shopMapper = (shopBack: IShopBack): IShopFront => ({
 });
 ```
 
-## index.ts
+### index.ts
 
 Now, hang on a minute.
 We are going to explain `shopsServiceFront` in the next section.
@@ -263,7 +263,7 @@ const app = {
 app.fetch().display();
 ```
 
-## service.front.ts
+### service.front.ts
 
 So far both solutions are still valid!
 But here comes the final piece of the demonstration...
@@ -326,20 +326,12 @@ export const shopsServiceFront = {
 };
 ```
 
-## Conclusion
-
-If you do not need immutability then the "Not-Pojo" solution is the best.
-You create instances of the classes eagerly when mapping the backend service.
-And you get all the expected behaviors instantly.
-
-But if you need immutability then the "Pojo" solution is the best.
-You can easily get cloned objects from the store when you need them.
-And you create instances of the classes lazily when behavior is needed.
-
-### A last word
+## It can even get worse
 
 In this demo application, the backend data was pretty simple.
 But what will happen if the model becomes more complex?
+
+*Not-Pojo:*
 
 Clearly, the following code is error prone, because of the long list of functions parameters.
 
@@ -369,8 +361,8 @@ export class ItemFront {
     public dataFront9: any
   ) {}
 
-  behavior1() { /* ... */ }
-  behavior2() { /* ... */ }
+  behavior1() { console.log(this.dataFront1); }
+  behavior2() { console.log(this.dataFront2); }
 }
 
 export const itemMapper = (itemBack: IItemBack) =>
@@ -402,3 +394,68 @@ const cloneItem = (itemFront: ItemFront) => {
   );
 };
 ```
+
+*Pojo:*
+
+Using pojo, we don't get into this pitfall.
+
+```typescript
+export interface IItemBack {
+  dataBack1: any;
+  dataBack2: any;
+  dataBack3: any;
+  dataBack4: any;
+  dataBack5: any;
+  dataBack6: any;
+  dataBack7: any;
+  dataBack8: any;
+  dataBack9: any;
+}
+
+export interface IItemFront {
+  dataFront1: any;
+  dataFront2: any;
+  dataFront3: any;
+  dataFront4: any;
+  dataFront5: any;
+  dataFront6: any;
+  dataFront7: any;
+  dataFront8: any;
+  dataFront9: any;
+}
+
+export class ItemFront {
+  constructor(public itemFront: IItemFront) {}
+
+  behavior1() { console.log(this.itemFront.dataFront1); }
+  behavior2() { console.log(this.itemFront.dataFront2); }
+}
+
+export const itemMapper = (itemBack: IItemBack): IItemFront => ({
+  // Easy mapping!
+  dataFront1: itemBack.dataBack1,
+  dataFront2: itemBack.dataBack2,
+  dataFront3: itemBack.dataBack3,
+  dataFront4: itemBack.dataBack4,
+  dataFront5: itemBack.dataBack5,
+  dataFront6: itemBack.dataBack6,
+  dataFront7: itemBack.dataBack7,
+  dataFront8: itemBack.dataBack8,
+  dataFront9: itemBack.dataBack9
+});
+
+const cloneItem = (itemFront: ItemFront): IItemFront => ({
+  // Easy cloning!
+  ...itemFront
+});
+```
+
+## Conclusion
+
+If you do not need immutability then the "Not-Pojo" solution is the best.
+You create instances of the classes eagerly when mapping the backend service.
+And you get all the expected behaviors instantly.
+
+But if you need immutability then the "Pojo" solution is the best.
+You can easily get cloned objects from the store when you need them.
+And you create instances of the classes lazily when behavior is needed.
