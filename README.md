@@ -395,6 +395,8 @@ const cloneItem = (itemFront: ItemFront) => {
 
 Clearly, this code is error prone, because of the long list of functions parameters.
 
+On the other hand, when using pojo we don't get into this pitfall.
+
 *Pojo:*
 
 ```typescript
@@ -447,8 +449,6 @@ const cloneItem = (itemFront: ItemFront): IItemFront => ({
   ...itemFront
 });
 ```
-
-Using pojo, we don't get into this pitfall.
 
 ## Conclusion
 
