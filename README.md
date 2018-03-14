@@ -452,7 +452,7 @@ const cloneItem = (itemFront: ItemFront): IItemFront => ({
 
 ## Conclusion
 
-If you do not need hexagonal-architecture and immutability then the "Not-Pojo" solution is the best.
+If you do not need hexagonal-architecture or immutability then the "Not-Pojo" solution is the best.
 You create instances of the classes eagerly when mapping the backend service.
 And you get all the expected behaviors instantly.
 
