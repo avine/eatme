@@ -333,8 +333,6 @@ But what will happen if the model becomes more complex?
 
 *Not-Pojo:*
 
-Clearly, the following code is error prone, because of the long list of functions parameters.
-
 ```typescript
 export interface IItemBack {
   dataBack1: any;
@@ -395,9 +393,9 @@ const cloneItem = (itemFront: ItemFront) => {
 };
 ```
 
-*Pojo:*
+Clearly, this code is error prone, because of the long list of functions parameters.
 
-Using pojo, we don't get into this pitfall.
+*Pojo:*
 
 ```typescript
 export interface IItemBack {
@@ -449,6 +447,8 @@ const cloneItem = (itemFront: ItemFront): IItemFront => ({
   ...itemFront
 });
 ```
+
+Using pojo, we don't get into this pitfall.
 
 ## Conclusion
 
