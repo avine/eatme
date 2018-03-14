@@ -15,6 +15,7 @@ export const shopsServiceFront = {
   set(_store: IShopFront[]) {
     store = _store;
   },
+
   get() {
     // Always return a clone for immutability
     return store.map(cloneShop);

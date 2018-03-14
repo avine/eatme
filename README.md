@@ -224,10 +224,19 @@ import { shopsServiceFront } from './service.front';
 import { ShopFront } from './shop.front';
 import { shopMapper } from './shop.mapper';
 
-const shops: ShopFront[] = shopsServiceBack().map(shopMapper);
-shopsServiceFront.set(shops);
+const app = {
+  fetch() {
+    const shops: ShopFront[] = shopsServiceBack().map(shopMapper);
+    shopsServiceFront.set(shops);
+    return this; // Enable chaining
+  },
 
-shopsServiceFront.get().forEach(shop => shop.showcase());
+  display() {
+    shopsServiceFront.get().forEach(shop => shop.showcase());
+  }
+};
+
+app.fetch().display();
 ```
 
 *Pojo:*
@@ -238,11 +247,20 @@ import { shopsServiceFront } from './service.front';
 import { IShopFront, ShopFront } from './shop.front';
 import { shopMapper } from './shop.mapper';
 
-const shops: IShopFront[] = shopsServiceBack().map(shopMapper);
-shopsServiceFront.set(shops);
+const app = {
+  fetch() {
+    const shops: IShopFront[] = shopsServiceBack().map(shopMapper);
+    shopsServiceFront.set(shops);
+    return this; // Enable chaining
+  },
 
-// With "Pojo", we create lazy class instance, when behavior is needed.
-shopsServiceFront.get().forEach(shop => new ShopFront(shop).showcase());
+  display() {
+    // With "Pojo", we create lazy class instance, when behavior is needed.
+    shopsServiceFront.get().forEach(shop => new ShopFront(shop).showcase());
+  }
+}
+
+app.fetch().display();
 ```
 
 ## service.front.ts
@@ -272,6 +290,7 @@ export const shopsServiceFront = {
   set(_store: ShopFront[]) {
     store = _store;
   },
+
   get() {
     // Always return a clone for immutability
     return store.map(cloneShop);
@@ -299,6 +318,7 @@ export const shopsServiceFront = {
   set(_store: IShopFront[]) {
     store = _store;
   },
+
   get() {
     // Always return a clone for immutability
     return store.map(cloneShop);
@@ -315,3 +335,70 @@ And you get all the expected behaviors instantly.
 But if you need immutability then the "Pojo" solution is the best.
 You can easily get cloned objects from the store when you need them.
 And you create instances of the classes lazily when behavior is needed.
+
+### A last word
+
+In this demo application, the backend data was pretty simple.
+But what will happen if the model becomes more complex?
+
+Clearly, the following code is error prone, because of the long list of functions parameters.
+
+```typescript
+export interface IItemBack {
+  dataBack1: any;
+  dataBack2: any;
+  dataBack3: any;
+  dataBack4: any;
+  dataBack5: any;
+  dataBack6: any;
+  dataBack7: any;
+  dataBack8: any;
+  dataBack9: any;
+}
+
+export class ItemFront {
+  constructor(
+    public dataFront1: any,
+    public dataFront2: any,
+    public dataFront3: any,
+    public dataFront4: any,
+    public dataFront5: any,
+    public dataFront6: any,
+    public dataFront7: any,
+    public dataFront8: any,
+    public dataFront9: any
+  ) {}
+
+  behavior1() { /* ... */ }
+  behavior2() { /* ... */ }
+}
+
+export const itemMapper = (itemBack: IItemBack) =>
+  new ItemFront(
+    // Long list of arguments...
+    itemBack.dataBack1,
+    itemBack.dataBack2,
+    itemBack.dataBack3,
+    itemBack.dataBack4,
+    itemBack.dataBack5,
+    itemBack.dataBack6,
+    itemBack.dataBack7,
+    itemBack.dataBack8,
+    itemBack.dataBack9
+  );
+
+const cloneItem = (itemFront: ItemFront) => {
+  return new ItemFront(
+    // Long list of arguments...
+    itemFront.dataFront1,
+    itemFront.dataFront2,
+    itemFront.dataFront3,
+    itemFront.dataFront4,
+    itemFront.dataFront5,
+    itemFront.dataFront6,
+    itemFront.dataFront7,
+    itemFront.dataFront8,
+    itemFront.dataFront9
+  );
+};
+```

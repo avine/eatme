@@ -3,8 +3,17 @@ import { shopsServiceFront } from './service.front';
 import { IShopFront, ShopFront } from './shop.front';
 import { shopMapper } from './shop.mapper';
 
-const shops: IShopFront[] = shopsServiceBack().map(shopMapper);
-shopsServiceFront.set(shops);
+const app = {
+  fetch() {
+    const shops: IShopFront[] = shopsServiceBack().map(shopMapper);
+    shopsServiceFront.set(shops);
+    return this; // Enable chaining
+  },
 
-// With "Pojo", we create lazy class instance, when behavior is needed.
-shopsServiceFront.get().forEach(shop => new ShopFront(shop).showcase());
+  display() {
+    // With "Pojo", we create lazy class instance, when behavior is needed.
+    shopsServiceFront.get().forEach(shop => new ShopFront(shop).showcase());
+  }
+}
+
+app.fetch().display();
