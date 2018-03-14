@@ -4,10 +4,10 @@
   "description": "Decoupling the frontend and backend, using \"Plain Old JavaScript Object\" versus \"Class instance with Behavior\".",
   "main": "index.js",
   "scripts": {
-    "not-pojo-v2": "ts-node src/not-pojo-v2/index",
-    "not-pojo": "ts-node src/not-pojo/index",
-    "pojo": "ts-node src/pojo/index",
     "start": "npm run pojo",
+    "pojo": "ts-node src/pojo/index",
+    "not-pojo": "ts-node src/not-pojo/index",
+    "not-pojo-old": "ts-node src/not-pojo-old/index",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {

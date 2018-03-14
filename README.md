@@ -6,9 +6,9 @@ What is the impact when "immutable" comes into play?
 
 ## The App
 
-Install dependencies with `npm i`.
+Install dependencies with `npm install`.
 
-Execute `npm run not-pojo` or `npm start` (which is an alias of `npm run pojo`).
+Execute `npm run not-pojo` and `npm run pojo` (`npm start` is an alias of `npm run pojo`).
 
 ```txt
 $ npm start
@@ -309,7 +309,7 @@ export const shopsServiceFront = {
 
 If you do not need immutability then the "Not-Pojo" solution is the best.
 You create instances of the classes eagerly when mapping the backend service.
-And you get all expected behaviors instantly.
+And you get all the expected behaviors instantly.
 
 But if you need immutability then the "Pojo" solution is the best.
 You can easily get cloned objects from the store when you need them.
