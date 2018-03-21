@@ -4,6 +4,19 @@ Decoupling the frontend and backend (hexagonal-architecture), using "Plain Old J
 
 What is the impact when "immutable" comes into play?
 
+
+## Definitions
+
+*"Immutable" in this presentation:*
+
+The **store** should expose its data as independent copies to **protect the components from each other**.
+Thus, a component can consume and modify this data without side effect on the other components.
+
+*"Immutable" in the Redux world:*
+
+The **component** that exposes its data to the outside by sending them to the store (with reducers), must clone them to **protect itself**.
+In this way the other components that retrieve this data from the store as they are, can modify them without side effect for the original component.
+
 ## The App
 
 Install dependencies with `npm install`.
